@@ -4,10 +4,11 @@ import { useData } from '../context/DataContext'
 import AdminAssignmentCard from '../components/admin/AdminAssignmentCard'
 import AssignmentForm from '../components/admin/AssignmentForm'
 import ConfirmDialog from '../components/common/ConfirmDialog'
+import EmptyState from '../components/common/EmptyState'
 
 function AdminDashboard() {
   const { currentUser } = useAuth()
-  const { assignments, submissions, deleteAssignment } = useData()
+  const { assignments, deleteAssignment } = useData()
 
   // State to control AssignmentForm modal
   const [isFormOpen, setIsFormOpen] = useState(false)
@@ -70,30 +71,24 @@ function AdminDashboard() {
 
       {/* Empty State */}
       {myAssignments.length === 0 ? (
-        <div className="bg-white rounded-xl border border-gray-200 p-8 text-center text-gray-500">
-          You haven't created any assignments yet. Click "+ New Assignment" to get started.
-        </div>
+        <EmptyState
+          icon="📝"
+          title="No Assignments Found"
+          message="You haven't created any assignments"
+          actionText="Create one"
+          onAction={handleOpenCreate}
+        />
       ) : (
         /* Responsive Grid: 1 col on mobile, 2 cols on tablet, 3 cols on desktop */
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {myAssignments.map((assignment) => {
-            // Count submissions from students who were assigned to this task
-            const submittedCount = submissions.filter(
-              (sub) =>
-                sub.assignmentId === assignment.id &&
-                assignment.assignedTo.includes(sub.studentId)
-            ).length
-
-            return (
-              <AdminAssignmentCard
-                key={assignment.id}
-                assignment={assignment}
-                submittedCount={submittedCount}
-                onEdit={handleOpenEdit}
-                onDelete={handleOpenDelete}
-              />
-            )
-          })}
+          {myAssignments.map((assignment) => (
+            <AdminAssignmentCard
+              key={assignment.id}
+              assignment={assignment}
+              onEdit={handleOpenEdit}
+              onDelete={handleOpenDelete}
+            />
+          ))}
         </div>
       )}
 

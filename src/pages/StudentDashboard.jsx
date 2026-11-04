@@ -2,6 +2,7 @@ import { useAuth } from '../context/AuthContext'
 import { useData } from '../context/DataContext'
 import AssignmentCard from '../components/student/AssignmentCard'
 import ProgressSummary from '../components/student/ProgressSummary'
+import EmptyState from '../components/common/EmptyState'
 
 function StudentDashboard() {
   const { currentUser } = useAuth()
@@ -30,16 +31,20 @@ function StudentDashboard() {
       </div>
 
       {/* Progress Summary at the top */}
-      <ProgressSummary
-        total={myAssignments.length}
-        submittedCount={submittedCount}
-      />
+      {myAssignments.length > 0 && (
+        <ProgressSummary
+          total={myAssignments.length}
+          submittedCount={submittedCount}
+        />
+      )}
 
       {/* Empty State */}
       {myAssignments.length === 0 ? (
-        <div className="bg-white rounded-xl border border-gray-200 p-8 text-center text-gray-500">
-          No assignments have been assigned to you yet.
-        </div>
+        <EmptyState
+          icon="🎉"
+          title="All Caught Up!"
+          message="No assignments yet. Enjoy the free time!"
+        />
       ) : (
         /* Responsive Grid: 1 col on mobile, 2 cols on tablet, 3 cols on desktop */
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
