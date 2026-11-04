@@ -1,15 +1,38 @@
+import { AuthProvider, useAuth } from './context/AuthContext'
+import { DataProvider } from './context/DataContext'
+import Login from './pages/Login'
+import Layout from './components/common/Layout'
+import StudentDashboard from './pages/StudentDashboard'
+import AdminDashboard from './pages/AdminDashboard'
+
+// Decides which screen to show based on login status and role
+function AppContent() {
+  const { currentUser } = useAuth()
+
+  // 1. If not logged in, show the login page
+  if (!currentUser) {
+    return <Login />
+  }
+
+  // 2. If logged in, wrap the view inside the shared Layout
+  return (
+    <Layout>
+      {currentUser.role === 'admin' ? (
+        <AdminDashboard />
+      ) : (
+        <StudentDashboard />
+      )}
+    </Layout>
+  )
+}
+
 function App() {
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
-      <div className="bg-white p-8 rounded-xl shadow-md border border-gray-200 text-center">
-        <h1 className="text-3xl font-bold text-blue-600 mb-2">
-          Assignment Dashboard
-        </h1>
-        <p className="text-gray-600">
-          Tailwind CSS is configured and working!
-        </p>
-      </div>
-    </div>
+    <AuthProvider>
+      <DataProvider>
+        <AppContent />
+      </DataProvider>
+    </AuthProvider>
   )
 }
 
