@@ -1,15 +1,50 @@
+import { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { useData } from '../context/DataContext'
 import AdminAssignmentCard from '../components/admin/AdminAssignmentCard'
+import AssignmentForm from '../components/admin/AssignmentForm'
+import ConfirmDialog from '../components/common/ConfirmDialog'
 
 function AdminDashboard() {
   const { currentUser } = useAuth()
-  const { assignments, submissions } = useData()
+  const { assignments, submissions, deleteAssignment } = useData()
+
+  // State to control AssignmentForm modal
+  const [isFormOpen, setIsFormOpen] = useState(false)
+  const [selectedAssignment, setSelectedAssignment] = useState(null)
+
+  // State to control Delete confirmation dialog
+  const [assignmentToDelete, setAssignmentToDelete] = useState(null)
 
   // Filter to show only assignments created by this admin
   const myAssignments = assignments.filter(
     (assignment) => assignment.createdBy === currentUser.id
   )
+
+  // Open modal for "+ New Assignment"
+  function handleOpenCreate() {
+    setSelectedAssignment(null)
+    setIsFormOpen(true)
+  }
+
+  // Open modal for editing an existing assignment
+  function handleOpenEdit(assignment) {
+    setSelectedAssignment(assignment)
+    setIsFormOpen(true)
+  }
+
+  // Prompt delete confirmation dialog
+  function handleOpenDelete(assignment) {
+    setAssignmentToDelete(assignment)
+  }
+
+  // Execute delete after confirmation
+  function handleConfirmDelete() {
+    if (assignmentToDelete) {
+      deleteAssignment(assignmentToDelete.id)
+      setAssignmentToDelete(null)
+    }
+  }
 
   return (
     <div>
@@ -24,9 +59,9 @@ function AdminDashboard() {
           </p>
         </div>
 
-        {/* Placeholder button for creating new assignments */}
         <button
           type="button"
+          onClick={handleOpenCreate}
           className="py-2 px-4 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm transition shadow-sm cursor-pointer"
         >
           + New Assignment
@@ -54,11 +89,31 @@ function AdminDashboard() {
                 key={assignment.id}
                 assignment={assignment}
                 submittedCount={submittedCount}
+                onEdit={handleOpenEdit}
+                onDelete={handleOpenDelete}
               />
             )
           })}
         </div>
       )}
+
+      {/* Assignment Create / Edit Modal Form */}
+      <AssignmentForm
+        isOpen={isFormOpen}
+        onClose={() => setIsFormOpen(false)}
+        assignmentToEdit={selectedAssignment}
+      />
+
+      {/* Delete Confirmation Dialog */}
+      <ConfirmDialog
+        isOpen={Boolean(assignmentToDelete)}
+        title="Delete Assignment"
+        message="Delete this assignment? Student submissions for it will also be removed."
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setAssignmentToDelete(null)}
+      />
     </div>
   )
 }

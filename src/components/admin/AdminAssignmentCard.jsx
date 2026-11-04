@@ -1,7 +1,7 @@
 import { formatDate } from '../../utils/dateHelpers'
 import ProgressBar from '../common/ProgressBar'
 
-function AdminAssignmentCard({ assignment, submittedCount }) {
+function AdminAssignmentCard({ assignment, submittedCount, onEdit, onDelete }) {
   const totalAssigned = assignment.assignedTo.length
 
   return (
@@ -49,16 +49,18 @@ function AdminAssignmentCard({ assignment, submittedCount }) {
           label="Class Submissions"
         />
 
-        {/* Placeholder Edit & Delete Buttons */}
+        {/* Edit & Delete Action Buttons */}
         <div className="flex items-center gap-2 mt-4">
           <button
             type="button"
+            onClick={() => onEdit(assignment)}
             className="flex-1 py-1.5 px-3 rounded-lg border border-gray-300 text-xs font-medium text-gray-700 hover:bg-gray-50 transition cursor-pointer"
           >
             Edit
           </button>
           <button
             type="button"
+            onClick={() => onDelete(assignment)}
             className="flex-1 py-1.5 px-3 rounded-lg border border-red-200 text-xs font-medium text-red-600 hover:bg-red-50 transition cursor-pointer"
           >
             Delete
@@ -70,4 +72,3 @@ function AdminAssignmentCard({ assignment, submittedCount }) {
 }
 
 export default AdminAssignmentCard
-
