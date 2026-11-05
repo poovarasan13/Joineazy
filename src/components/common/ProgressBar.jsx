@@ -5,7 +5,7 @@ function ProgressBar({ value, max, label }) {
   return (
     <div className="w-full">
       {label && (
-        <div className="flex justify-between items-center text-xs font-semibold text-gray-700 mb-1.5">
+        <div className="flex justify-between items-center text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1.5">
           <span>{label}</span>
           <span>
             {value} of {max} submitted ({percentage}%)
@@ -13,10 +13,17 @@ function ProgressBar({ value, max, label }) {
         </div>
       )}
 
-      {/* Bar container */}
-      <div className="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
+      {/* Accessible progress bar track */}
+      <div
+        role="progressbar"
+        aria-valuenow={percentage}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label={label || 'Submission progress'}
+        className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden"
+      >
         <div
-          className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
+          className="bg-blue-600 dark:bg-blue-500 h-2.5 rounded-full transition-all duration-300 ease-out"
           style={{ width: `${percentage}%` }}
         />
       </div>
@@ -25,4 +32,3 @@ function ProgressBar({ value, max, label }) {
 }
 
 export default ProgressBar
-

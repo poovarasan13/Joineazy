@@ -22,27 +22,27 @@ function AdminAssignmentCard({ assignment, onEdit, onDelete }) {
   ).length
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 flex flex-col justify-between hover:shadow-md transition">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-5 flex flex-col justify-between hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
       {/* Top Section */}
       <div>
         {/* Due Date & Assignment Count */}
-        <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
+        <div className="flex flex-wrap items-center justify-between gap-1 text-xs text-gray-500 dark:text-gray-400 mb-2">
           <span>
-            Due: <strong className="text-gray-700">{formatDate(assignment.dueDate)}</strong>
+            Due: <strong className="text-gray-700 dark:text-gray-200">{formatDate(assignment.dueDate)}</strong>
           </span>
 
-          <span className="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 font-medium">
+          <span className="px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 font-medium">
             {assignedStudents.length} Student{assignedStudents.length === 1 ? '' : 's'}
           </span>
         </div>
 
         {/* Title */}
-        <h3 className="text-lg font-bold text-gray-900 mb-2 leading-snug">
+        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 leading-snug break-words">
           {assignment.title}
         </h3>
 
         {/* Description */}
-        <p className="text-sm text-gray-600 line-clamp-2 mb-3">
+        <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 mb-3 break-words">
           {assignment.description}
         </p>
 
@@ -52,14 +52,15 @@ function AdminAssignmentCard({ assignment, onEdit, onDelete }) {
             href={assignment.driveLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs text-blue-600 hover:text-blue-800 font-medium inline-flex items-center gap-1 hover:underline"
+            aria-label={`Open Google Drive folder for ${assignment.title} in new tab`}
+            className="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium inline-flex items-center gap-1 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
           >
             Open Drive Folder ↗
           </a>
         </div>
 
         {/* Class Completion Progress Bar (always visible at top of card) */}
-        <div className="bg-gray-50 p-3 rounded-lg border border-gray-100 mb-3">
+        <div className="bg-gray-50 dark:bg-gray-900/60 p-3 rounded-lg border border-gray-100 dark:border-gray-700/60 mb-3">
           <ProgressBar
             value={submittedCount}
             max={assignedStudents.length}
@@ -71,7 +72,9 @@ function AdminAssignmentCard({ assignment, onEdit, onDelete }) {
         <button
           type="button"
           onClick={() => setIsExpanded(!isExpanded)}
-          className="w-full py-1.5 px-3 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 text-xs font-semibold text-gray-700 flex items-center justify-between transition cursor-pointer"
+          aria-expanded={isExpanded}
+          aria-label={isExpanded ? 'Collapse student list' : 'Expand student list'}
+          className="w-full py-1.5 px-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-xs font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-between transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <span>
             {isExpanded ? 'Hide students' : 'View students'} ({assignedStudents.length})
@@ -83,14 +86,13 @@ function AdminAssignmentCard({ assignment, onEdit, onDelete }) {
 
         {/* Expanded Student Submission Status List */}
         {isExpanded && (
-          <div className="mt-3 border border-gray-200 rounded-lg divide-y divide-gray-100 max-h-48 overflow-y-auto bg-gray-50">
+          <div className="mt-3 border border-gray-200 dark:border-gray-700 rounded-lg divide-y divide-gray-100 dark:divide-gray-750 max-h-48 overflow-y-auto bg-gray-50 dark:bg-gray-900/50">
             {assignedStudents.length === 0 ? (
-              <p className="p-3 text-xs text-gray-500 text-center">
+              <p className="p-3 text-xs text-gray-500 dark:text-gray-400 text-center">
                 No students assigned.
               </p>
             ) : (
               assignedStudents.map((student) => {
-                // Find submission record for this specific student and assignment
                 const submission = submissions.find(
                   (s) =>
                     s.assignmentId === assignment.id &&
@@ -101,18 +103,18 @@ function AdminAssignmentCard({ assignment, onEdit, onDelete }) {
                 return (
                   <div
                     key={student.id}
-                    className="p-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-xs bg-white hover:bg-gray-50 transition"
+                    className="p-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-xs bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-750 transition"
                   >
-                    <span className="font-medium text-gray-800">
+                    <span className="font-medium text-gray-800 dark:text-gray-200">
                       {student.name}
                     </span>
 
                     {isSubmitted ? (
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-green-100 text-green-800 border border-green-200 w-fit">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-green-100 text-green-800 border border-green-200 dark:bg-green-950/60 dark:text-green-300 dark:border-green-800 w-fit">
                         Submitted ({formatDate(submission.submittedAt)})
                       </span>
                     ) : (
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-100 text-amber-800 border border-amber-200 w-fit">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-100 text-amber-800 border border-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800 w-fit">
                         Not submitted
                       </span>
                     )}
@@ -125,19 +127,21 @@ function AdminAssignmentCard({ assignment, onEdit, onDelete }) {
       </div>
 
       {/* Bottom Section: Edit & Delete Buttons */}
-      <div className="pt-4 border-t border-gray-100 mt-4">
+      <div className="pt-4 border-t border-gray-100 dark:border-gray-700/60 mt-4">
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={() => onEdit(assignment)}
-            className="flex-1 py-1.5 px-3 rounded-lg border border-gray-300 text-xs font-medium text-gray-700 hover:bg-gray-50 transition cursor-pointer"
+            aria-label={`Edit ${assignment.title}`}
+            className="flex-1 py-1.5 px-3 rounded-lg border border-gray-300 dark:border-gray-600 text-xs font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             Edit
           </button>
           <button
             type="button"
             onClick={() => onDelete(assignment)}
-            className="flex-1 py-1.5 px-3 rounded-lg border border-red-200 text-xs font-medium text-red-600 hover:bg-red-50 transition cursor-pointer"
+            aria-label={`Delete ${assignment.title}`}
+            className="flex-1 py-1.5 px-3 rounded-lg border border-red-200 dark:border-red-900/60 text-xs font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-red-500"
           >
             Delete
           </button>
