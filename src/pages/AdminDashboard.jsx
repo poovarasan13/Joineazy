@@ -17,17 +17,14 @@ function AdminDashboard({ activeNav, onSelectNav }) {
   const { currentUser } = useAuth()
   const { assignments, submissions, deleteAssignment } = useData()
 
-  // Modal and dialog states
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [selectedAssignment, setSelectedAssignment] = useState(null)
   const [assignmentToDelete, setAssignmentToDelete] = useState(null)
 
-  // Local filter states
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [sortBy, setSortBy] = useState('earliest')
 
-  // Sync with Sidebar navigation tab if changed
   useEffect(() => {
     if (activeNav === 'pending') {
       setStatusFilter('pending')
@@ -38,12 +35,10 @@ function AdminDashboard({ activeNav, onSelectNav }) {
     }
   }, [activeNav])
 
-  // Filter only assignments created by this admin
   const myAssignments = assignments.filter(
     (assignment) => assignment.createdBy === currentUser.id
   )
 
-  // Check if an assignment has 100% submission completion
   function isAssignmentCompleted(assignment) {
     if (!assignment.assignedTo || assignment.assignedTo.length === 0) return false
     const submittedCount = submissions.filter(
@@ -54,7 +49,6 @@ function AdminDashboard({ activeNav, onSelectNav }) {
     return submittedCount === assignment.assignedTo.length
   }
 
-  // Metrics
   const totalCount = myAssignments.length
   const completedCount = myAssignments.filter(isAssignmentCompleted).length
   const pendingCount = totalCount - completedCount
@@ -64,7 +58,6 @@ function AdminDashboard({ activeNav, onSelectNav }) {
     )
   ).length
 
-  // Filter assignments by search term and completed/pending status
   const filteredAssignments = myAssignments.filter((assignment) => {
     const matchesSearch = assignment.title
       .toLowerCase()
@@ -78,31 +71,26 @@ function AdminDashboard({ activeNav, onSelectNav }) {
     return true
   })
 
-  // Sort assignments by due date
   filteredAssignments.sort((a, b) => {
     const timeA = new Date(a.dueDate).getTime()
     const timeB = new Date(b.dueDate).getTime()
     return sortBy === 'earliest' ? timeA - timeB : timeB - timeA
   })
 
-  // Open modal for "+ New Assignment"
   function handleOpenCreate() {
     setSelectedAssignment(null)
     setIsFormOpen(true)
   }
 
-  // Open modal for editing an existing assignment
   function handleOpenEdit(assignment) {
     setSelectedAssignment(assignment)
     setIsFormOpen(true)
   }
 
-  // Prompt delete confirmation dialog
   function handleOpenDelete(assignment) {
     setAssignmentToDelete(assignment)
   }
 
-  // Execute delete after confirmation
   function handleConfirmDelete() {
     if (assignmentToDelete) {
       deleteAssignment(assignmentToDelete.id)
@@ -112,7 +100,6 @@ function AdminDashboard({ activeNav, onSelectNav }) {
 
   return (
     <div className="space-y-6">
-      {/* Header with Title and Create Action */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
@@ -123,7 +110,6 @@ function AdminDashboard({ activeNav, onSelectNav }) {
           </p>
         </div>
 
-        {/* "+ Create Assignment" Button */}
         <button
           type="button"
           onClick={handleOpenCreate}
@@ -137,9 +123,7 @@ function AdminDashboard({ activeNav, onSelectNav }) {
         </button>
       </div>
 
-      {/* KPI Metric Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        {/* Active Modules */}
         <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
@@ -159,7 +143,6 @@ function AdminDashboard({ activeNav, onSelectNav }) {
           </div>
         </div>
 
-        {/* 100% Completed */}
         <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
@@ -179,7 +162,6 @@ function AdminDashboard({ activeNav, onSelectNav }) {
           </div>
         </div>
 
-        {/* Incomplete Classes */}
         <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
@@ -199,7 +181,6 @@ function AdminDashboard({ activeNav, onSelectNav }) {
           </div>
         </div>
 
-        {/* Submissions Received */}
         <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
@@ -220,7 +201,6 @@ function AdminDashboard({ activeNav, onSelectNav }) {
         </div>
       </div>
 
-      {/* Toolbar filter */}
       {myAssignments.length > 0 && (
         <FilterBar
           searchTerm={searchTerm}
@@ -240,7 +220,6 @@ function AdminDashboard({ activeNav, onSelectNav }) {
         />
       )}
 
-      {/* Empty State when no assignments created */}
       {myAssignments.length === 0 ? (
         <EmptyState
           title="No Assignments Created Yet"
@@ -249,7 +228,6 @@ function AdminDashboard({ activeNav, onSelectNav }) {
           onAction={handleOpenCreate}
         />
       ) : filteredAssignments.length === 0 ? (
-        /* Empty State when filter/search produces 0 matches */
         <EmptyState
           title="No Matching Assignments"
           message="No tasks match your current filter or search criteria."
@@ -261,7 +239,6 @@ function AdminDashboard({ activeNav, onSelectNav }) {
           }}
         />
       ) : (
-        /* Data Table View Only */
         <AdminTableView
           assignments={filteredAssignments}
           onEdit={handleOpenEdit}
@@ -269,14 +246,12 @@ function AdminDashboard({ activeNav, onSelectNav }) {
         />
       )}
 
-      {/* Assignment Create / Edit Modal Form */}
       <AssignmentForm
         isOpen={isFormOpen}
         onClose={() => setIsFormOpen(false)}
         assignmentToEdit={selectedAssignment}
       />
 
-      {/* Delete Confirmation Dialog */}
       <ConfirmDialog
         isOpen={Boolean(assignmentToDelete)}
         title="Delete Assignment"

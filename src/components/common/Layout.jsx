@@ -6,7 +6,6 @@ function Layout({ children, activeNav, onSelectNav }) {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex">
-      {/* Sidebar Navigation: White SaaS Sidebar */}
       <Sidebar
         mobileOpen={mobileSidebarOpen}
         onCloseMobile={() => setMobileSidebarOpen(false)}
@@ -14,9 +13,7 @@ function Layout({ children, activeNav, onSelectNav }) {
         onSelectNav={onSelectNav}
       />
 
-      {/* Main Workspace */}
       <div className="flex-1 flex flex-col min-w-0">
-        {/* Mobile Top Navbar with Hamburger */}
         <div className="h-14 border-b border-slate-200 bg-white px-4 flex items-center justify-between md:hidden">
           <button
             type="button"
@@ -34,7 +31,6 @@ function Layout({ children, activeNav, onSelectNav }) {
           <div className="w-6" />
         </div>
 
-        {/* Content Container */}
         <main className="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6 lg:p-8">
           {children}
         </main>

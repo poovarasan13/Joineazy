@@ -16,12 +16,10 @@ function StudentDashboard({ activeNav, onSelectNav }) {
   const { currentUser } = useAuth()
   const { assignments, submissions, isSubmitted } = useData()
 
-  // Local filter states
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [sortBy, setSortBy] = useState('earliest')
 
-  // Sync with Sidebar navigation tab if changed
   useEffect(() => {
     if (activeNav === 'pending') {
       setStatusFilter('not_submitted')
@@ -32,12 +30,10 @@ function StudentDashboard({ activeNav, onSelectNav }) {
     }
   }, [activeNav])
 
-  // Filter assignments assigned to this student
   const myAssignments = assignments.filter((assignment) =>
     assignment.assignedTo.includes(currentUser.id)
   )
 
-  // Metrics
   const totalCount = myAssignments.length
   const submittedCount = myAssignments.filter((assignment) =>
     isSubmitted(assignment.id, currentUser.id)
@@ -50,7 +46,6 @@ function StudentDashboard({ activeNav, onSelectNav }) {
   const completionPercentage =
     totalCount > 0 ? Math.round((submittedCount / totalCount) * 100) : 0
 
-  // Filter by search & status
   const filteredAssignments = myAssignments.filter((assignment) => {
     const matchesSearch = assignment.title
       .toLowerCase()
@@ -64,7 +59,6 @@ function StudentDashboard({ activeNav, onSelectNav }) {
     return true
   })
 
-  // Sort assignments
   filteredAssignments.sort((a, b) => {
     const timeA = new Date(a.dueDate).getTime()
     const timeB = new Date(b.dueDate).getTime()
@@ -73,7 +67,6 @@ function StudentDashboard({ activeNav, onSelectNav }) {
 
   return (
     <div className="space-y-6">
-      {/* Page Title & User Greeting */}
       <div>
         <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
           Student Assignment Center
@@ -83,9 +76,7 @@ function StudentDashboard({ activeNav, onSelectNav }) {
         </p>
       </div>
 
-      {/* KPI Stat Metric Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        {/* Total Assigned */}
         <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
@@ -105,7 +96,6 @@ function StudentDashboard({ activeNav, onSelectNav }) {
           </div>
         </div>
 
-        {/* Submitted */}
         <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
@@ -125,7 +115,6 @@ function StudentDashboard({ activeNav, onSelectNav }) {
           </div>
         </div>
 
-        {/* Pending */}
         <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
@@ -145,7 +134,6 @@ function StudentDashboard({ activeNav, onSelectNav }) {
           </div>
         </div>
 
-        {/* Overdue */}
         <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
@@ -166,7 +154,6 @@ function StudentDashboard({ activeNav, onSelectNav }) {
         </div>
       </div>
 
-      {/* Filter Toolbar */}
       {myAssignments.length > 0 && (
         <FilterBar
           searchTerm={searchTerm}
@@ -186,14 +173,12 @@ function StudentDashboard({ activeNav, onSelectNav }) {
         />
       )}
 
-      {/* Empty State when student has no assignments assigned */}
       {myAssignments.length === 0 ? (
         <EmptyState
           title="All Caught Up!"
           message="No assignments have been assigned to your account yet. Enjoy your free time!"
         />
       ) : filteredAssignments.length === 0 ? (
-        /* Empty State when search/filter yields 0 results */
         <EmptyState
           title="No Matching Assignments"
           message="No tasks match your current search query or status filter."
@@ -205,7 +190,6 @@ function StudentDashboard({ activeNav, onSelectNav }) {
           }}
         />
       ) : (
-        /* Data Table View Only */
         <StudentTableView
           assignments={filteredAssignments}
           submissions={submissions}

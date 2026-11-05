@@ -11,7 +11,6 @@ function ConfirmDialog({
 }) {
   const cancelBtnRef = useRef(null)
 
-  // Close modal on pressing the Escape key & focus the cancel button on open
   useEffect(() => {
     if (!isOpen) return
 

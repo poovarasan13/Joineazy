@@ -13,7 +13,6 @@ function Header() {
   return (
     <header className="bg-white border-b border-slate-200 sticky top-0 z-40 backdrop-blur-md bg-white/90">
       <div className="max-w-6xl mx-auto px-4 py-3.5 flex flex-wrap items-center justify-between gap-3">
-        {/* Brand / Logo */}
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-xs">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -30,9 +29,7 @@ function Header() {
           </div>
         </div>
 
-        {/* User Info & Actions */}
         <div className="flex items-center flex-wrap gap-2.5 sm:gap-3">
-          {/* User Profile Pill */}
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-200 bg-slate-50/70">
             <span className="text-xs font-semibold text-slate-800">
               {currentUser?.name}
@@ -46,7 +43,6 @@ function Header() {
             </span>
           </div>
 
-          {/* Logout Button */}
           <button
             type="button"
             onClick={logout}

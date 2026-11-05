@@ -7,21 +7,17 @@ function AssignmentForm({ isOpen, onClose, assignmentToEdit }) {
   const { users, addAssignment, updateAssignment } = useData()
   const titleInputRef = useRef(null)
 
-  // Get list of all students
   const students = users.filter((user) => user.role === 'student')
 
-  // Form field states
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [dueDate, setDueDate] = useState('')
   const [driveLink, setDriveLink] = useState('')
-  const [assignMode, setAssignMode] = useState('all') // 'all' or 'selected'
+  const [assignMode, setAssignMode] = useState('all')
   const [selectedStudentIds, setSelectedStudentIds] = useState([])
 
-  // Validation error messages mapped by field name
   const [errors, setErrors] = useState({})
 
-  // Initialize form state when opened or when assignmentToEdit changes
   useEffect(() => {
     if (assignmentToEdit) {
       setTitle(assignmentToEdit.title || '')
@@ -49,7 +45,6 @@ function AssignmentForm({ isOpen, onClose, assignmentToEdit }) {
     }
   }, [assignmentToEdit, isOpen, students.length])
 
-  // Close modal on Escape key press
   useEffect(() => {
     if (!isOpen) return
 
@@ -65,7 +60,6 @@ function AssignmentForm({ isOpen, onClose, assignmentToEdit }) {
 
   if (!isOpen) return null
 
-  // Checkbox toggle for student selection
   function handleStudentCheckboxChange(studentId) {
     if (selectedStudentIds.includes(studentId)) {
       setSelectedStudentIds(selectedStudentIds.filter((id) => id !== studentId))
@@ -136,7 +130,6 @@ function AssignmentForm({ isOpen, onClose, assignmentToEdit }) {
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs overflow-y-auto transition-opacity duration-200"
     >
       <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-slate-200 dark:border-slate-800 my-8 transition-all duration-200">
-        {/* Header */}
         <div className="flex items-center justify-between pb-3.5 border-b border-slate-100 dark:border-slate-800 mb-5">
           <div>
             <h3
@@ -159,9 +152,7 @@ function AssignmentForm({ isOpen, onClose, assignmentToEdit }) {
           </button>
         </div>
 
-        {/* Assignment Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Title Field */}
           <div>
             <label
               htmlFor="assignment-title"
@@ -186,7 +177,6 @@ function AssignmentForm({ isOpen, onClose, assignmentToEdit }) {
             )}
           </div>
 
-          {/* Description Field */}
           <div>
             <label
               htmlFor="assignment-description"
@@ -204,7 +194,6 @@ function AssignmentForm({ isOpen, onClose, assignmentToEdit }) {
             />
           </div>
 
-          {/* Due Date & Drive Link */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label
@@ -252,13 +241,11 @@ function AssignmentForm({ isOpen, onClose, assignmentToEdit }) {
             </div>
           </div>
 
-          {/* Assign To Section */}
           <div>
             <span className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase mb-2">
               Assign Students *
             </span>
 
-            {/* Radios: All students vs Selected students */}
             <div className="flex flex-wrap items-center gap-4 sm:gap-6 mb-3">
               <div className="flex items-center gap-2">
                 <input
@@ -300,7 +287,6 @@ function AssignmentForm({ isOpen, onClose, assignmentToEdit }) {
               </div>
             </div>
 
-            {/* Checkbox list when 'Selected students' is chosen */}
             {assignMode === 'selected' && (
               <div className="border border-slate-200 dark:border-slate-800 rounded-xl p-3 space-y-2 bg-slate-50 dark:bg-slate-850 max-h-36 overflow-y-auto">
                 {students.map((student) => {
@@ -336,7 +322,6 @@ function AssignmentForm({ isOpen, onClose, assignmentToEdit }) {
             )}
           </div>
 
-          {/* Action Buttons */}
           <div className="flex flex-col-reverse sm:flex-row sm:items-center justify-end gap-2.5 sm:gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
             <button
               type="button"

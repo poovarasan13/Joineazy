@@ -6,15 +6,12 @@ import ProgressBar from '../common/ProgressBar'
 function AdminAssignmentCard({ assignment, onEdit, onDelete }) {
   const { users, submissions } = useData()
 
-  // State to toggle the assigned student list
   const [isExpanded, setIsExpanded] = useState(false)
 
-  // Get the list of student objects assigned to this task
   const assignedStudents = users.filter((user) =>
     assignment.assignedTo.includes(user.id)
   )
 
-  // Count how many assigned students have submitted
   const submittedCount = submissions.filter(
     (sub) =>
       sub.assignmentId === assignment.id &&
@@ -23,9 +20,7 @@ function AdminAssignmentCard({ assignment, onEdit, onDelete }) {
 
   return (
     <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xs border border-slate-200 dark:border-slate-800 p-5 flex flex-col justify-between hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700 hover:-translate-y-0.5 transition-all duration-200">
-      {/* Top Section */}
       <div>
-        {/* Due Date & Assignment Count */}
         <div className="flex flex-wrap items-center justify-between gap-1 text-xs text-slate-500 dark:text-slate-400 mb-2.5">
           <span className="flex items-center gap-1.5">
             <svg className="w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -39,17 +34,14 @@ function AdminAssignmentCard({ assignment, onEdit, onDelete }) {
           </span>
         </div>
 
-        {/* Title */}
         <h3 className="text-base font-bold text-slate-900 dark:text-white mb-2 leading-snug break-words">
           {assignment.title}
         </h3>
 
-        {/* Description */}
         <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 line-clamp-2 mb-3 break-words">
           {assignment.description}
         </p>
 
-        {/* Drive Link */}
         <div className="mb-4">
           <a
             href={assignment.driveLink}
@@ -62,7 +54,6 @@ function AdminAssignmentCard({ assignment, onEdit, onDelete }) {
           </a>
         </div>
 
-        {/* Class Completion Progress Bar */}
         <div className="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-xl border border-slate-200/80 dark:border-slate-800 mb-3">
           <ProgressBar
             value={submittedCount}
@@ -71,7 +62,6 @@ function AdminAssignmentCard({ assignment, onEdit, onDelete }) {
           />
         </div>
 
-        {/* View Students Toggle Button */}
         <button
           type="button"
           onClick={() => setIsExpanded(!isExpanded)}
@@ -87,7 +77,6 @@ function AdminAssignmentCard({ assignment, onEdit, onDelete }) {
           </span>
         </button>
 
-        {/* Expanded Student Submission Status List */}
         {isExpanded && (
           <div className="mt-2.5 border border-slate-200 dark:border-slate-800 rounded-xl divide-y divide-slate-100 dark:divide-slate-800 max-h-48 overflow-y-auto bg-slate-50/50 dark:bg-slate-900/50">
             {assignedStudents.length === 0 ? (
@@ -131,7 +120,6 @@ function AdminAssignmentCard({ assignment, onEdit, onDelete }) {
         )}
       </div>
 
-      {/* Bottom Section: Edit & Delete Buttons */}
       <div className="pt-4 border-t border-slate-100 dark:border-slate-800 mt-4">
         <div className="flex items-center gap-2">
           <button

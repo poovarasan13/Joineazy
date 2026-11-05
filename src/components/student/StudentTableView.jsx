@@ -8,7 +8,6 @@ function StudentTableView({ assignments, submissions }) {
   const { currentUser } = useAuth()
   const { markAsSubmitted } = useData()
 
-  // Track which assignment is currently being submitted in the 2-step modal
   const [activeAssignment, setActiveAssignment] = useState(null)
 
   function handleStartSubmit(assignment) {
@@ -64,7 +63,6 @@ function StudentTableView({ assignments, submissions }) {
                   key={assignment.id}
                   className="hover:bg-slate-50/70 transition-colors group"
                 >
-                  {/* Title & Description Snippet */}
                   <td className="py-4 px-4 sm:px-6">
                     <div className="font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors">
                       {assignment.title}
@@ -74,7 +72,6 @@ function StudentTableView({ assignments, submissions }) {
                     </div>
                   </td>
 
-                  {/* Due Date */}
                   <td className="py-4 px-4 whitespace-nowrap">
                     <div className="flex items-center gap-1.5 text-xs text-slate-700">
                       <svg
@@ -96,7 +93,6 @@ function StudentTableView({ assignments, submissions }) {
                     </div>
                   </td>
 
-                  {/* Course Google Drive Link */}
                   <td className="py-4 px-4 whitespace-nowrap">
                     <a
                       href={assignment.driveLink}
@@ -112,7 +108,6 @@ function StudentTableView({ assignments, submissions }) {
                     </a>
                   </td>
 
-                  {/* Status Badge */}
                   <td className="py-4 px-4 whitespace-nowrap">
                     <div className="flex items-center gap-1.5 flex-wrap">
                       {isSubmitted ? (
@@ -135,7 +130,6 @@ function StudentTableView({ assignments, submissions }) {
                     </div>
                   </td>
 
-                  {/* Action Column */}
                   <td className="py-4 px-4 sm:px-6 whitespace-nowrap text-right">
                     {isSubmitted ? (
                       <div className="inline-flex items-center gap-2.5">
@@ -177,7 +171,6 @@ function StudentTableView({ assignments, submissions }) {
         </table>
       </div>
 
-      {/* 2-Step Submission Modal */}
       <SubmissionModal
         isOpen={Boolean(activeAssignment)}
         assignment={activeAssignment}

@@ -37,7 +37,6 @@ function Sidebar({ mobileOpen, onCloseMobile, activeNav = 'all', onSelectNav }) 
 
   return (
     <>
-      {/* Mobile Backdrop */}
       {mobileOpen && (
         <div
           onClick={onCloseMobile}
@@ -45,15 +44,12 @@ function Sidebar({ mobileOpen, onCloseMobile, activeNav = 'all', onSelectNav }) 
         />
       )}
 
-      {/* Sidebar Container: Clean White Modern Theme */}
       <aside
         className={`fixed md:sticky top-0 left-0 z-50 h-screen w-64 bg-white text-slate-700 border-r border-slate-200 flex flex-col justify-between transition-transform duration-200 shadow-xs ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}
       >
-        {/* Top: Brand Header & Navigation */}
         <div>
-          {/* Brand Header */}
           <div className="h-16 px-5 border-b border-slate-100 flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-sm shadow-xs">
@@ -69,7 +65,6 @@ function Sidebar({ mobileOpen, onCloseMobile, activeNav = 'all', onSelectNav }) 
               </div>
             </div>
 
-            {/* Mobile Close Button */}
             <button
               type="button"
               onClick={onCloseMobile}
@@ -79,7 +74,6 @@ function Sidebar({ mobileOpen, onCloseMobile, activeNav = 'all', onSelectNav }) 
             </button>
           </div>
 
-          {/* Navigation Links */}
           <div className="p-3 space-y-1">
             <div className="px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-slate-400">
               Workspace Views
@@ -111,9 +105,7 @@ function Sidebar({ mobileOpen, onCloseMobile, activeNav = 'all', onSelectNav }) 
           </div>
         </div>
 
-        {/* Bottom: Profile & Logout Footer */}
         <div className="p-3 border-t border-slate-100 space-y-2">
-          {/* User Profile Card */}
           <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center gap-2.5 overflow-hidden">
             <div className="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-xs shrink-0">
               {currentUser?.name?.charAt(0) || 'U'}
@@ -128,7 +120,6 @@ function Sidebar({ mobileOpen, onCloseMobile, activeNav = 'all', onSelectNav }) 
             </div>
           </div>
 
-          {/* Logout Action */}
           <button
             type="button"
             onClick={logout}

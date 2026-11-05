@@ -9,7 +9,6 @@ import { loadFromStorage, saveToStorage } from '../utils/storage'
 const DataContext = createContext(null)
 
 export function DataProvider({ children }) {
-  // Check if saved localStorage data is unparseable/corrupted
   const [hasStorageError, setHasStorageError] = useState(() => {
     try {
       const rawUsers = localStorage.getItem('users')
@@ -24,7 +23,6 @@ export function DataProvider({ children }) {
     }
   })
 
-  // Simulated initial loading delay (600ms) to show spinner on first load
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -34,7 +32,6 @@ export function DataProvider({ children }) {
     return () => clearTimeout(timer)
   }, [])
 
-  // 1. Dynamic state for users, assignments, and submissions from localStorage
   const [users, setUsers] = useState(() => {
     return loadFromStorage('users', initialUsers)
   })
@@ -47,7 +44,6 @@ export function DataProvider({ children }) {
     return loadFromStorage('submissions', initialSubmissions)
   })
 
-  // 2. Automatically sync to localStorage whenever state changes
   useEffect(() => {
     if (!hasStorageError) {
       saveToStorage('users', users)
@@ -66,7 +62,6 @@ export function DataProvider({ children }) {
     }
   }, [submissions, hasStorageError])
 
-  // Reset corrupted data back to original seed data
   function resetData() {
     try {
       localStorage.removeItem('users')
@@ -84,7 +79,6 @@ export function DataProvider({ children }) {
     setHasStorageError(false)
   }
 
-  // 3. User Sign Up
   function addUser(userData) {
     const newUser = {
       ...userData,
@@ -94,7 +88,6 @@ export function DataProvider({ children }) {
     return newUser
   }
 
-  // 4. Actions to manage assignments
   function addAssignment(data) {
     const newAssignment = {
       ...data,
@@ -117,7 +110,6 @@ export function DataProvider({ children }) {
     setSubmissions((prev) => prev.filter((sub) => sub.assignmentId !== id))
   }
 
-  // 5. Actions to manage submissions (supports optional student public Drive link)
   function markAsSubmitted(assignmentId, studentId, submissionLink = '') {
     const alreadySubmitted = submissions.some(
       (sub) => sub.assignmentId === assignmentId && sub.studentId === studentId

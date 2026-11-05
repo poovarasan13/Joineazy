@@ -6,30 +6,24 @@ function Login() {
   const { login } = useAuth()
   const { users, addUser } = useData()
 
-  // Mode: 'signin' or 'signup'
   const [authMode, setAuthMode] = useState('signin')
 
-  // Sign In inputs
   const [loginUsername, setLoginUsername] = useState('')
   const [loginPassword, setLoginPassword] = useState('')
   const [loginError, setLoginError] = useState('')
   const [autofillNotice, setAutofillNotice] = useState('')
 
-  // Sign Up inputs
   const [signupName, setSignupName] = useState('')
   const [signupUsername, setSignupUsername] = useState('')
   const [signupPassword, setSignupPassword] = useState('')
-  const [signupRole, setSignupRole] = useState('student') // 'student' or 'admin'
+  const [signupRole, setSignupRole] = useState('student')
   const [signupError, setSignupError] = useState('')
 
-  // Show/Hide password toggle
   const [showPassword, setShowPassword] = useState(false)
 
-  // Demo accounts
   const demoAdmins = users.filter((u) => u.role === 'admin')
   const demoStudents = users.filter((u) => u.role === 'student')
 
-  // Handle Demo Account Autofill
   function handleSelectDemoAccount(user) {
     setAuthMode('signin')
     setLoginUsername(user.username || '')
@@ -37,13 +31,11 @@ function Login() {
     setLoginError('')
     setAutofillNotice(`Loaded credentials for ${user.name}`)
 
-    // Clear notice after 3.5 seconds
     setTimeout(() => {
       setAutofillNotice('')
     }, 3500)
   }
 
-  // Handle Sign In submission
   function handleSignInSubmit(e) {
     e.preventDefault()
     setLoginError('')
@@ -56,7 +48,6 @@ function Login() {
       return
     }
 
-    // Match username and password
     const matchedUser = users.find(
       (u) =>
         u.username.toLowerCase() === cleanUsername &&
@@ -71,7 +62,6 @@ function Login() {
     login(matchedUser)
   }
 
-  // Handle Sign Up submission
   function handleSignUpSubmit(e) {
     e.preventDefault()
     setSignupError('')
@@ -93,14 +83,12 @@ function Login() {
       return
     }
 
-    // Check if username already exists
     const exists = users.some((u) => u.username.toLowerCase() === cleanUsername)
     if (exists) {
       setSignupError('This username is already taken. Please choose another username.')
       return
     }
 
-    // Create and save new user in local state & localStorage
     const newUser = addUser({
       name: cleanName,
       username: cleanUsername,
@@ -108,13 +96,11 @@ function Login() {
       role: signupRole,
     })
 
-    // Immediately log in as the newly created user
     login(newUser)
   }
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col justify-center items-center py-10 px-4 sm:px-6 lg:px-8">
-      {/* Brand Header */}
       <div className="text-center mb-6">
         <div className="w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center text-white font-bold text-xl shadow-md shadow-indigo-500/20 mx-auto mb-3">
           J
@@ -127,7 +113,6 @@ function Login() {
         </p>
       </div>
 
-      {/* Main Authentication Card */}
       <div className="max-w-md w-full bg-white border border-slate-200 shadow-sm rounded-2xl p-6 sm:p-8">
         <div className="mb-5">
           <h2 className="text-xl font-bold tracking-tight text-slate-900">
@@ -140,7 +125,6 @@ function Login() {
           </p>
         </div>
 
-        {/* Mode Switcher Tabs */}
         <div className="flex rounded-xl bg-slate-100 p-1 mb-5 border border-slate-200/60">
           <button
             type="button"
@@ -174,7 +158,6 @@ function Login() {
           </button>
         </div>
 
-        {/* Autofill Banner */}
         {autofillNotice && (
           <div className="mb-4 p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-medium flex items-center justify-between">
             <span>{autofillNotice}</span>
@@ -182,7 +165,6 @@ function Login() {
           </div>
         )}
 
-        {/* SIGN IN FORM */}
         {authMode === 'signin' && (
           <form onSubmit={handleSignInSubmit} className="space-y-4">
             {loginError && (
@@ -244,7 +226,6 @@ function Login() {
           </form>
         )}
 
-        {/* SIGN UP FORM */}
         {authMode === 'signup' && (
           <form onSubmit={handleSignUpSubmit} className="space-y-4">
             {signupError && (
@@ -306,7 +287,6 @@ function Login() {
               </div>
             </div>
 
-            {/* Role Selection */}
             <div>
               <span className="block text-xs font-semibold text-slate-700 uppercase mb-2">
                 Account Role *
@@ -357,7 +337,6 @@ function Login() {
           </form>
         )}
 
-        {/* Divider */}
         <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-slate-200" />
@@ -369,9 +348,7 @@ function Login() {
           </div>
         </div>
 
-        {/* Demo Accounts List */}
         <div className="space-y-3.5">
-          {/* Faculty Admins */}
           <div>
             <div className="flex items-center gap-1.5 mb-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-purple-500" />
@@ -403,7 +380,6 @@ function Login() {
             </div>
           </div>
 
-          {/* Students */}
           <div>
             <div className="flex items-center gap-1.5 mb-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
@@ -436,8 +412,6 @@ function Login() {
           </div>
         </div>
       </div>
-
-     
     </div>
   )
 }

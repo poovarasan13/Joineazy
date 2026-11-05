@@ -9,7 +9,6 @@ function FilterBar({
 }) {
   return (
     <div className="bg-white dark:bg-slate-900 p-3.5 sm:p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs mb-6 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 transition-colors">
-      {/* Title Search Input with Search Icon */}
       <div className="flex-1 relative">
         <label htmlFor="filter-search-input" className="sr-only">
           Search assignments by title
@@ -39,9 +38,7 @@ function FilterBar({
         )}
       </div>
 
-      {/* Dropdown Filters */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
-        {/* Status Filter */}
         <div className="w-full sm:w-auto">
           <label htmlFor="filter-status-select" className="sr-only">
             Filter by status
@@ -61,7 +58,6 @@ function FilterBar({
           </select>
         </div>
 
-        {/* Sort Filter */}
         <div className="w-full sm:w-auto">
           <label htmlFor="filter-sort-select" className="sr-only">
             Sort by due date

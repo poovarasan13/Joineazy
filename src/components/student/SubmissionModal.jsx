@@ -6,7 +6,6 @@ function SubmissionModal({ isOpen, assignment, onClose, onSubmit }) {
   const [linkError, setLinkError] = useState('')
   const inputRef = useRef(null)
 
-  // Reset state whenever the modal opens
   useEffect(() => {
     if (isOpen) {
       setStep(1)
@@ -15,7 +14,6 @@ function SubmissionModal({ isOpen, assignment, onClose, onSubmit }) {
     }
   }, [isOpen])
 
-  // Close on Escape key
   useEffect(() => {
     if (!isOpen) return
 
@@ -31,7 +29,6 @@ function SubmissionModal({ isOpen, assignment, onClose, onSubmit }) {
 
   if (!isOpen || !assignment) return null
 
-  // Validate and advance from Step 1 to Step 2
   function handleNextStep(e) {
     e.preventDefault()
     setLinkError('')
@@ -45,7 +42,6 @@ function SubmissionModal({ isOpen, assignment, onClose, onSubmit }) {
     setStep(2)
   }
 
-  // Execute submission
   function handleFinalSubmit() {
     onSubmit(driveLink.trim())
     onClose()
@@ -59,7 +55,6 @@ function SubmissionModal({ isOpen, assignment, onClose, onSubmit }) {
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs transition-opacity duration-200"
     >
       <div className="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-slate-200 transition-all">
-        {/* Step Indicator Header */}
         <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-5">
           <div className="flex items-center gap-2">
             <span
@@ -86,7 +81,6 @@ function SubmissionModal({ isOpen, assignment, onClose, onSubmit }) {
           </button>
         </div>
 
-        {/* STEP 1: Verify Drive Upload & Optional Link Input */}
         {step === 1 && (
           <form onSubmit={handleNextStep} className="space-y-4">
             <div>
@@ -101,7 +95,6 @@ function SubmissionModal({ isOpen, assignment, onClose, onSubmit }) {
               </p>
             </div>
 
-            {/* Course Drive Folder Link */}
             <div className="p-3.5 rounded-xl bg-indigo-50/70 border border-indigo-100 flex items-center justify-between gap-3">
               <div className="truncate">
                 <span className="text-[11px] font-bold text-indigo-900 uppercase tracking-wider block">
@@ -122,7 +115,6 @@ function SubmissionModal({ isOpen, assignment, onClose, onSubmit }) {
               </a>
             </div>
 
-            {/* Student's Public Drive Link Input */}
             <div>
               <label
                 htmlFor="student-drive-link"
@@ -151,7 +143,6 @@ function SubmissionModal({ isOpen, assignment, onClose, onSubmit }) {
               )}
             </div>
 
-            {/* Step 1 Actions */}
             <div className="flex flex-col-reverse sm:flex-row sm:items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
               <button
                 type="button"
@@ -170,7 +161,6 @@ function SubmissionModal({ isOpen, assignment, onClose, onSubmit }) {
           </form>
         )}
 
-        {/* STEP 2: Final Confirmation Dialog */}
         {step === 2 && (
           <div className="space-y-4">
             <div>
@@ -185,7 +175,6 @@ function SubmissionModal({ isOpen, assignment, onClose, onSubmit }) {
               </p>
             </div>
 
-            {/* Submission Summary Card */}
             <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-2">
               <div className="flex justify-between">
                 <span className="text-slate-500 font-medium">Assignment:</span>
@@ -217,7 +206,6 @@ function SubmissionModal({ isOpen, assignment, onClose, onSubmit }) {
               ⚠️ This will mark the task as officially <strong>Submitted</strong> for faculty review with an immutable submission timestamp.
             </div>
 
-            {/* Step 2 Actions */}
             <div className="flex flex-col-reverse sm:flex-row sm:items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
               <button
                 type="button"

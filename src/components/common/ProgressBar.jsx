@@ -1,5 +1,4 @@
 function ProgressBar({ value, max, label }) {
-  // Calculate percentage safely
   const percentage = max > 0 ? Math.round((value / max) * 100) : 0
 
   return (
@@ -13,7 +12,6 @@ function ProgressBar({ value, max, label }) {
         </div>
       )}
 
-      {/* Accessible progress bar track */}
       <div
         role="progressbar"
         aria-valuenow={percentage}

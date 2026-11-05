@@ -1,5 +1,4 @@
 export const users = [
-  // Admins (Professors)
   {
     id: 'u1',
     name: 'Prof. Sharma',
@@ -14,8 +13,6 @@ export const users = [
     password: 'password123',
     role: 'admin',
   },
-
-  // Students
   {
     id: 'u3',
     name: 'Aarav Patel',
@@ -54,7 +51,6 @@ export const users = [
 ]
 
 export const assignments = [
-  // 3 assignments created by Prof. Sharma (u1)
   {
     id: 'a1',
     title: 'React Hooks Practice',
@@ -82,8 +78,6 @@ export const assignments = [
     createdBy: 'u1',
     assignedTo: ['u4', 'u5', 'u6', 'u7'],
   },
-
-  // 3 assignments created by Prof. Iyer (u2)
   {
     id: 'a4',
     title: 'Computer Networks Socket Chat',
@@ -114,19 +108,12 @@ export const assignments = [
 ]
 
 export const submissions = [
-  // Submissions for a1 (React Hooks Practice)
   { assignmentId: 'a1', studentId: 'u3', submittedAt: '2026-11-02T10:30:00' },
   { assignmentId: 'a1', studentId: 'u4', submittedAt: '2026-11-02T14:15:00' },
-
-  // Submissions for a2 (DBMS ER Diagram)
   { assignmentId: 'a2', studentId: 'u3', submittedAt: '2026-10-27T16:00:00' },
   { assignmentId: 'a2', studentId: 'u5', submittedAt: '2026-10-28T09:45:00' },
-
-  // Submissions for a4 (Computer Networks Socket Chat)
   { assignmentId: 'a4', studentId: 'u3', submittedAt: '2026-10-30T11:20:00' },
   { assignmentId: 'a4', studentId: 'u4', submittedAt: '2026-10-30T18:00:00' },
   { assignmentId: 'a4', studentId: 'u6', submittedAt: '2026-10-31T08:30:00' },
-
-  // Submissions for a5 (Binary Tree Traversals)
   { assignmentId: 'a5', studentId: 'u7', submittedAt: '2026-11-03T11:00:00' },
 ]

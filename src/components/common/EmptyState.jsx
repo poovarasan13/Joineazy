@@ -1,7 +1,6 @@
 function EmptyState({ icon, title, message, actionText, onAction }) {
   return (
     <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-8 sm:p-12 text-center max-w-md mx-auto shadow-sm transition-colors">
-      {/* Icon illustration container */}
       <div className="w-12 h-12 mx-auto rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-4">
         {icon ? (
           typeof icon === 'string' && icon.length <= 2 ? (

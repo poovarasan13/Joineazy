@@ -6,7 +6,6 @@ import ProgressBar from '../common/ProgressBar'
 function AdminTableView({ assignments, onEdit, onDelete }) {
   const { users, submissions } = useData()
 
-  // Track which assignment row has its student roster expanded
   const [expandedRowId, setExpandedRowId] = useState(null)
 
   function toggleRow(id) {
@@ -55,7 +54,6 @@ function AdminTableView({ assignments, onEdit, onDelete }) {
               return (
                 <Fragment key={assignment.id}>
                   <tr className="hover:bg-slate-50/70 transition-colors group">
-                    {/* Title & Description */}
                     <td className="py-4 px-4 sm:px-6">
                       <div className="font-semibold text-slate-900 line-clamp-1 group-hover:text-indigo-600 transition-colors">
                         {assignment.title}
@@ -65,7 +63,6 @@ function AdminTableView({ assignments, onEdit, onDelete }) {
                       </div>
                     </td>
 
-                    {/* Due Date */}
                     <td className="py-4 px-4 whitespace-nowrap">
                       <div className="flex items-center gap-1.5 text-xs text-slate-700 font-medium">
                         <svg
@@ -85,7 +82,6 @@ function AdminTableView({ assignments, onEdit, onDelete }) {
                       </div>
                     </td>
 
-                    {/* Drive Resource Link */}
                     <td className="py-4 px-4 whitespace-nowrap">
                       <a
                         href={assignment.driveLink}
@@ -101,7 +97,6 @@ function AdminTableView({ assignments, onEdit, onDelete }) {
                       </a>
                     </td>
 
-                    {/* Progress Bar */}
                     <td className="py-4 px-4 min-w-[180px]">
                       <div className="w-full">
                         <ProgressBar
@@ -112,7 +107,6 @@ function AdminTableView({ assignments, onEdit, onDelete }) {
                       </div>
                     </td>
 
-                    {/* Student Roster Toggle */}
                     <td className="py-4 px-4 whitespace-nowrap">
                       <button
                         type="button"
@@ -128,7 +122,6 @@ function AdminTableView({ assignments, onEdit, onDelete }) {
                       </button>
                     </td>
 
-                    {/* Actions */}
                     <td className="py-4 px-4 sm:px-6 whitespace-nowrap text-right">
                       <div className="flex items-center justify-end gap-1.5">
                         <button
@@ -151,7 +144,6 @@ function AdminTableView({ assignments, onEdit, onDelete }) {
                     </td>
                   </tr>
 
-                  {/* Expanded Sub-Row for Student Submission Roster */}
                   {isExpanded && (
                     <tr className="bg-slate-50/50">
                       <td colSpan={6} className="py-3 px-4 sm:px-8 border-b border-slate-200">
@@ -168,8 +160,8 @@ function AdminTableView({ assignments, onEdit, onDelete }) {
                                   (s) =>
                                     s.assignmentId === assignment.id &&
                                     s.studentId === student.id
-                                )
-                                const studentDone = Boolean(submission)
+                                );
+                                const studentDone = Boolean(submission);
 
                                 return (
                                   <div
@@ -205,7 +197,7 @@ function AdminTableView({ assignments, onEdit, onDelete }) {
                                       )}
                                     </div>
                                   </div>
-                                )
+                                );
                               })}
                             </div>
                           )}
