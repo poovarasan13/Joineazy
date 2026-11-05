@@ -1,17 +1,60 @@
 export const users = [
-  { id: 'u1', name: 'Prof. Sharma', role: 'admin' },
-  { id: 'u2', name: 'Prof. Iyer', role: 'admin' },
+  // Admins (Professors)
+  {
+    id: 'u1',
+    name: 'Prof. Sharma',
+    username: 'prof.sharma',
+    password: 'password123',
+    role: 'admin',
+  },
+  {
+    id: 'u2',
+    name: 'Prof. Iyer',
+    username: 'prof.iyer',
+    password: 'password123',
+    role: 'admin',
+  },
 
-  
-  { id: 'u3', name: 'Aarav Patel', role: 'student' },
-  { id: 'u4', name: 'Priya Nair', role: 'student' },
-  { id: 'u5', name: 'Rohan Gupta', role: 'student' },
-  { id: 'u6', name: 'Ananya Verma', role: 'student' },
-  { id: 'u7', name: 'Vikram Singh', role: 'student' },
+  // Students
+  {
+    id: 'u3',
+    name: 'Aarav Patel',
+    username: 'aarav',
+    password: 'password123',
+    role: 'student',
+  },
+  {
+    id: 'u4',
+    name: 'Priya Nair',
+    username: 'priya',
+    password: 'password123',
+    role: 'student',
+  },
+  {
+    id: 'u5',
+    name: 'Rohan Gupta',
+    username: 'rohan',
+    password: 'password123',
+    role: 'student',
+  },
+  {
+    id: 'u6',
+    name: 'Ananya Verma',
+    username: 'ananya',
+    password: 'password123',
+    role: 'student',
+  },
+  {
+    id: 'u7',
+    name: 'Vikram Singh',
+    username: 'vikram',
+    password: 'password123',
+    role: 'student',
+  },
 ]
 
 export const assignments = [
-
+  // 3 assignments created by Prof. Sharma (u1)
   {
     id: 'a1',
     title: 'React Hooks Practice',
@@ -19,13 +62,13 @@ export const assignments = [
     dueDate: '2026-11-10',
     driveLink: 'https://drive.google.com/drive/folders/sample-react-hooks',
     createdBy: 'u1',
-    assignedTo: ['u3', 'u4', 'u5', 'u6', 'u7'], 
+    assignedTo: ['u3', 'u4', 'u5', 'u6', 'u7'],
   },
   {
     id: 'a2',
     title: 'DBMS ER Diagram',
     description: 'Design a complete Entity-Relationship diagram for an online hospital management system.',
-    dueDate: '2026-10-28', 
+    dueDate: '2026-10-28',
     driveLink: 'https://drive.google.com/drive/folders/sample-dbms-er',
     createdBy: 'u1',
     assignedTo: ['u3', 'u4', 'u5'],
@@ -37,10 +80,10 @@ export const assignments = [
     dueDate: '2026-11-18',
     driveLink: 'https://drive.google.com/drive/folders/sample-os-scheduling',
     createdBy: 'u1',
-    assignedTo: ['u4', 'u5', 'u6', 'u7'], 
+    assignedTo: ['u4', 'u5', 'u6', 'u7'],
   },
 
-  
+  // 3 assignments created by Prof. Iyer (u2)
   {
     id: 'a4',
     title: 'Computer Networks Socket Chat',
@@ -48,7 +91,7 @@ export const assignments = [
     dueDate: '2026-10-31',
     driveLink: 'https://drive.google.com/drive/folders/sample-networks-chat',
     createdBy: 'u2',
-    assignedTo: ['u3', 'u4', 'u5', 'u6', 'u7'], 
+    assignedTo: ['u3', 'u4', 'u5', 'u6', 'u7'],
   },
   {
     id: 'a5',
@@ -57,7 +100,7 @@ export const assignments = [
     dueDate: '2026-11-15',
     driveLink: 'https://drive.google.com/drive/folders/sample-tree-traversals',
     createdBy: 'u2',
-    assignedTo: ['u3', 'u5', 'u7'], 
+    assignedTo: ['u3', 'u5', 'u7'],
   },
   {
     id: 'a6',
@@ -66,25 +109,24 @@ export const assignments = [
     dueDate: '2026-11-25',
     driveLink: 'https://drive.google.com/drive/folders/sample-system-design',
     createdBy: 'u2',
-    assignedTo: ['u3', 'u4', 'u6', 'u7'], 
+    assignedTo: ['u3', 'u4', 'u6', 'u7'],
   },
 ]
 
 export const submissions = [
-
+  // Submissions for a1 (React Hooks Practice)
   { assignmentId: 'a1', studentId: 'u3', submittedAt: '2026-11-02T10:30:00' },
   { assignmentId: 'a1', studentId: 'u4', submittedAt: '2026-11-02T14:15:00' },
 
-
+  // Submissions for a2 (DBMS ER Diagram)
   { assignmentId: 'a2', studentId: 'u3', submittedAt: '2026-10-27T16:00:00' },
   { assignmentId: 'a2', studentId: 'u5', submittedAt: '2026-10-28T09:45:00' },
 
- 
+  // Submissions for a4 (Computer Networks Socket Chat)
   { assignmentId: 'a4', studentId: 'u3', submittedAt: '2026-10-30T11:20:00' },
   { assignmentId: 'a4', studentId: 'u4', submittedAt: '2026-10-30T18:00:00' },
   { assignmentId: 'a4', studentId: 'u6', submittedAt: '2026-10-31T08:30:00' },
 
-
+  // Submissions for a5 (Binary Tree Traversals)
   { assignmentId: 'a5', studentId: 'u7', submittedAt: '2026-11-03T11:00:00' },
 ]
-

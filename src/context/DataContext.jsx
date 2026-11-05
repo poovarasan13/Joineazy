@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect } from 'react'
 import {
   assignments as initialAssignments,
   submissions as initialSubmissions,
-  users,
+  users as initialUsers,
 } from '../data/seedData'
 import { loadFromStorage, saveToStorage } from '../utils/storage'
 
@@ -12,6 +12,8 @@ export function DataProvider({ children }) {
   // Check if saved localStorage data is unparseable/corrupted
   const [hasStorageError, setHasStorageError] = useState(() => {
     try {
+      const rawUsers = localStorage.getItem('users')
+      if (rawUsers !== null) JSON.parse(rawUsers)
       const rawAssignments = localStorage.getItem('assignments')
       if (rawAssignments !== null) JSON.parse(rawAssignments)
       const rawSubmissions = localStorage.getItem('submissions')
@@ -32,7 +34,11 @@ export function DataProvider({ children }) {
     return () => clearTimeout(timer)
   }, [])
 
-  // 1. Load assignments and submissions from localStorage (falls back to seed data)
+  // 1. Dynamic state for users, assignments, and submissions from localStorage
+  const [users, setUsers] = useState(() => {
+    return loadFromStorage('users', initialUsers)
+  })
+
   const [assignments, setAssignments] = useState(() => {
     return loadFromStorage('assignments', initialAssignments)
   })
@@ -41,7 +47,13 @@ export function DataProvider({ children }) {
     return loadFromStorage('submissions', initialSubmissions)
   })
 
-  // 2. Automatically sync to localStorage whenever state changes (only if no error)
+  // 2. Automatically sync to localStorage whenever state changes
+  useEffect(() => {
+    if (!hasStorageError) {
+      saveToStorage('users', users)
+    }
+  }, [users, hasStorageError])
+
   useEffect(() => {
     if (!hasStorageError) {
       saveToStorage('assignments', assignments)
@@ -57,19 +69,32 @@ export function DataProvider({ children }) {
   // Reset corrupted data back to original seed data
   function resetData() {
     try {
+      localStorage.removeItem('users')
       localStorage.removeItem('assignments')
       localStorage.removeItem('submissions')
     } catch (err) {
       console.error('Error resetting storage:', err)
     }
+    setUsers(initialUsers)
     setAssignments(initialAssignments)
     setSubmissions(initialSubmissions)
+    saveToStorage('users', initialUsers)
     saveToStorage('assignments', initialAssignments)
     saveToStorage('submissions', initialSubmissions)
     setHasStorageError(false)
   }
 
-  // 3. Actions to manage assignments
+  // 3. User Sign Up
+  function addUser(userData) {
+    const newUser = {
+      ...userData,
+      id: 'u_' + Date.now(),
+    }
+    setUsers((prev) => [...prev, newUser])
+    return newUser
+  }
+
+  // 4. Actions to manage assignments
   function addAssignment(data) {
     const newAssignment = {
       ...data,
@@ -92,7 +117,7 @@ export function DataProvider({ children }) {
     setSubmissions((prev) => prev.filter((sub) => sub.assignmentId !== id))
   }
 
-  // 4. Actions to manage submissions
+  // 5. Actions to manage submissions
   function markAsSubmitted(assignmentId, studentId) {
     const alreadySubmitted = submissions.some(
       (sub) => sub.assignmentId === assignmentId && sub.studentId === studentId
@@ -115,6 +140,7 @@ export function DataProvider({ children }) {
 
   const value = {
     users,
+    addUser,
     assignments,
     submissions,
     isLoading,

@@ -43,7 +43,6 @@ function AssignmentForm({ isOpen, onClose, assignmentToEdit }) {
     setErrors({})
 
     if (isOpen) {
-      // Focus the first interactive field when opened
       setTimeout(() => {
         titleInputRef.current?.focus()
       }, 50)
@@ -78,7 +77,6 @@ function AssignmentForm({ isOpen, onClose, assignmentToEdit }) {
   function handleSubmit(e) {
     e.preventDefault()
 
-    // Validation checks
     const newErrors = {}
 
     if (!title.trim()) {
@@ -135,22 +133,27 @@ function AssignmentForm({ isOpen, onClose, assignmentToEdit }) {
       role="dialog"
       aria-modal="true"
       aria-labelledby="assignment-form-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs overflow-y-auto transition-opacity duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs overflow-y-auto transition-opacity duration-200"
     >
-      <div className="bg-white dark:bg-gray-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-gray-200 dark:border-gray-700 my-8 transition-all duration-200">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-slate-200 dark:border-slate-800 my-8 transition-all duration-200">
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-gray-700 mb-5">
-          <h3
-            id="assignment-form-title"
-            className="text-xl font-bold text-gray-900 dark:text-white"
-          >
-            {assignmentToEdit ? 'Edit Assignment' : 'New Assignment'}
-          </h3>
+        <div className="flex items-center justify-between pb-3.5 border-b border-slate-100 dark:border-slate-800 mb-5">
+          <div>
+            <h3
+              id="assignment-form-title"
+              className="text-lg font-bold text-slate-900 dark:text-white"
+            >
+              {assignmentToEdit ? 'Edit Assignment Details' : 'Create New Assignment'}
+            </h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              Fill in the parameters and assign student rosters
+            </p>
+          </div>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close dialog"
-            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-xl font-bold leading-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 rounded p-1"
+            className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-xl font-bold leading-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-lg p-1"
           >
             ×
           </button>
@@ -162,9 +165,9 @@ function AssignmentForm({ isOpen, onClose, assignmentToEdit }) {
           <div>
             <label
               htmlFor="assignment-title"
-              className="block text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase mb-1"
+              className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase mb-1"
             >
-              Title *
+              Assignment Title *
             </label>
             <input
               ref={titleInputRef}
@@ -175,11 +178,11 @@ function AssignmentForm({ isOpen, onClose, assignmentToEdit }) {
                 setTitle(e.target.value)
                 if (errors.title) setErrors({ ...errors, title: '' })
               }}
-              placeholder="e.g. React Hooks Practice"
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+              placeholder="e.g. React State Management Lab"
+              className="w-full px-3.5 py-2.5 border border-slate-300 dark:border-slate-700 rounded-xl text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors"
             />
             {errors.title && (
-              <p className="text-xs text-red-600 dark:text-red-400 mt-1">{errors.title}</p>
+              <p className="text-xs text-rose-600 dark:text-rose-400 mt-1">{errors.title}</p>
             )}
           </div>
 
@@ -187,17 +190,17 @@ function AssignmentForm({ isOpen, onClose, assignmentToEdit }) {
           <div>
             <label
               htmlFor="assignment-description"
-              className="block text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase mb-1"
+              className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase mb-1"
             >
-              Description
+              Description & Instructions
             </label>
             <textarea
               id="assignment-description"
               rows={3}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Provide assignment details or instructions..."
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none transition-colors"
+              placeholder="Outline expectations, submission criteria, or relevant links..."
+              className="w-full px-3.5 py-2.5 border border-slate-300 dark:border-slate-700 rounded-xl text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none transition-colors"
             />
           </div>
 
@@ -206,7 +209,7 @@ function AssignmentForm({ isOpen, onClose, assignmentToEdit }) {
             <div>
               <label
                 htmlFor="assignment-due-date"
-                className="block text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase mb-1"
+                className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase mb-1"
               >
                 Due Date *
               </label>
@@ -218,19 +221,19 @@ function AssignmentForm({ isOpen, onClose, assignmentToEdit }) {
                   setDueDate(e.target.value)
                   if (errors.dueDate) setErrors({ ...errors, dueDate: '' })
                 }}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+                className="w-full px-3.5 py-2.5 border border-slate-300 dark:border-slate-700 rounded-xl text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors"
               />
               {errors.dueDate && (
-                <p className="text-xs text-red-600 dark:text-red-400 mt-1">{errors.dueDate}</p>
+                <p className="text-xs text-rose-600 dark:text-rose-400 mt-1">{errors.dueDate}</p>
               )}
             </div>
 
             <div>
               <label
                 htmlFor="assignment-drive-link"
-                className="block text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase mb-1"
+                className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase mb-1"
               >
-                Drive Link *
+                Google Drive Link *
               </label>
               <input
                 id="assignment-drive-link"
@@ -241,18 +244,18 @@ function AssignmentForm({ isOpen, onClose, assignmentToEdit }) {
                   if (errors.driveLink) setErrors({ ...errors, driveLink: '' })
                 }}
                 placeholder="https://drive.google.com/..."
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+                className="w-full px-3.5 py-2.5 border border-slate-300 dark:border-slate-700 rounded-xl text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors"
               />
               {errors.driveLink && (
-                <p className="text-xs text-red-600 dark:text-red-400 mt-1">{errors.driveLink}</p>
+                <p className="text-xs text-rose-600 dark:text-rose-400 mt-1">{errors.driveLink}</p>
               )}
             </div>
           </div>
 
           {/* Assign To Section */}
           <div>
-            <span className="block text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase mb-2">
-              Assign To *
+            <span className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase mb-2">
+              Assign Students *
             </span>
 
             {/* Radios: All students vs Selected students */}
@@ -268,13 +271,13 @@ function AssignmentForm({ isOpen, onClose, assignmentToEdit }) {
                     setAssignMode('all')
                     if (errors.students) setErrors({ ...errors, students: '' })
                   }}
-                  className="text-blue-600 focus:ring-blue-500 h-4 w-4 cursor-pointer"
+                  className="text-indigo-600 focus:ring-indigo-500 h-4 w-4 cursor-pointer"
                 />
                 <label
                   htmlFor="assign-mode-all"
-                  className="text-sm text-gray-700 dark:text-gray-300 cursor-pointer"
+                  className="text-sm font-medium text-slate-700 dark:text-slate-300 cursor-pointer"
                 >
-                  All students ({students.length})
+                  All enrolled students ({students.length})
                 </label>
               </div>
 
@@ -286,11 +289,11 @@ function AssignmentForm({ isOpen, onClose, assignmentToEdit }) {
                   value="selected"
                   checked={assignMode === 'selected'}
                   onChange={() => setAssignMode('selected')}
-                  className="text-blue-600 focus:ring-blue-500 h-4 w-4 cursor-pointer"
+                  className="text-indigo-600 focus:ring-indigo-500 h-4 w-4 cursor-pointer"
                 />
                 <label
                   htmlFor="assign-mode-selected"
-                  className="text-sm text-gray-700 dark:text-gray-300 cursor-pointer"
+                  className="text-sm font-medium text-slate-700 dark:text-slate-300 cursor-pointer"
                 >
                   Selected students
                 </label>
@@ -299,7 +302,7 @@ function AssignmentForm({ isOpen, onClose, assignmentToEdit }) {
 
             {/* Checkbox list when 'Selected students' is chosen */}
             {assignMode === 'selected' && (
-              <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-3 space-y-2 bg-gray-50 dark:bg-gray-900/50 max-h-36 overflow-y-auto">
+              <div className="border border-slate-200 dark:border-slate-800 rounded-xl p-3 space-y-2 bg-slate-50 dark:bg-slate-850 max-h-36 overflow-y-auto">
                 {students.map((student) => {
                   const isChecked = selectedStudentIds.includes(student.id)
                   const inputId = `student-${student.id}`
@@ -314,13 +317,13 @@ function AssignmentForm({ isOpen, onClose, assignmentToEdit }) {
                           handleStudentCheckboxChange(student.id)
                           if (errors.students) setErrors({ ...errors, students: '' })
                         }}
-                        className="rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500 h-4 w-4 cursor-pointer"
+                        className="rounded border-slate-300 dark:border-slate-700 text-indigo-600 focus:ring-indigo-500 h-4 w-4 cursor-pointer"
                       />
                       <label
                         htmlFor={inputId}
-                        className="text-sm text-gray-700 dark:text-gray-300 cursor-pointer select-none"
+                        className="text-sm text-slate-700 dark:text-slate-300 cursor-pointer select-none"
                       >
-                        {student.name}
+                        {student.name} <span className="text-xs text-slate-400">(@{student.username})</span>
                       </label>
                     </div>
                   )
@@ -329,22 +332,22 @@ function AssignmentForm({ isOpen, onClose, assignmentToEdit }) {
             )}
 
             {errors.students && (
-              <p className="text-xs text-red-600 dark:text-red-400 mt-1">{errors.students}</p>
+              <p className="text-xs text-rose-600 dark:text-rose-400 mt-1">{errors.students}</p>
             )}
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-col-reverse sm:flex-row sm:items-center justify-end gap-2.5 sm:gap-3 pt-3 border-t border-gray-100 dark:border-gray-700">
+          <div className="flex flex-col-reverse sm:flex-row sm:items-center justify-end gap-2.5 sm:gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
             <button
               type="button"
               onClick={onClose}
-              className="w-full sm:w-auto px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-400"
+              className="w-full sm:w-auto px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-slate-400"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="w-full sm:w-auto px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500 rounded-lg transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full sm:w-auto px-5 py-2 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 rounded-xl transition shadow-xs cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               {assignmentToEdit ? 'Save Changes' : 'Create Assignment'}
             </button>

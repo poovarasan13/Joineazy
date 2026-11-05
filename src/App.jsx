@@ -1,4 +1,4 @@
-import { ThemeProvider } from './context/ThemeContext'
+import { useState, useEffect } from 'react'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import { DataProvider, useData } from './context/DataContext'
 import Login from './pages/Login'
@@ -12,12 +12,19 @@ import ErrorMessage from './components/common/ErrorMessage'
 function AppContent() {
   const { currentUser } = useAuth()
   const { isLoading, hasStorageError, resetData } = useData()
+  const [activeNav, setActiveNav] = useState('all')
 
-  // 1. Initial 600ms loading state
+  // Enforce pure white/light theme across the app
+  useEffect(() => {
+    document.documentElement.classList.remove('dark')
+    localStorage.removeItem('theme_mode')
+  }, [])
+
+  // 1. Initial loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4 transition-colors">
-        <Spinner text="Loading assignments..." />
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+        <Spinner text="Loading your workspace..." />
       </div>
     )
   }
@@ -25,7 +32,7 @@ function AppContent() {
   // 2. LocalStorage corruption error state
   if (hasStorageError) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4 transition-colors">
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
         <ErrorMessage
           title="Data Storage Error"
           message="Saved assignment data in your browser is unreadable or corrupted. Click below to restore the default seed data."
@@ -36,18 +43,18 @@ function AppContent() {
     )
   }
 
-  // 3. If not logged in, show the login page
+  // 3. If not logged in, show the split-screen enterprise login/register portal
   if (!currentUser) {
     return <Login />
   }
 
-  // 4. If logged in, wrap the view inside the shared Layout
+  // 4. If logged in, wrap the view inside the shared Layout shell with persistent sidebar
   return (
-    <Layout>
+    <Layout activeNav={activeNav} onSelectNav={setActiveNav}>
       {currentUser.role === 'admin' ? (
-        <AdminDashboard />
+        <AdminDashboard activeNav={activeNav} onSelectNav={setActiveNav} />
       ) : (
-        <StudentDashboard />
+        <StudentDashboard activeNav={activeNav} onSelectNav={setActiveNav} />
       )}
     </Layout>
   )
@@ -55,13 +62,11 @@ function AppContent() {
 
 function App() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <DataProvider>
-          <AppContent />
-        </DataProvider>
-      </AuthProvider>
-    </ThemeProvider>
+    <AuthProvider>
+      <DataProvider>
+        <AppContent />
+      </DataProvider>
+    </AuthProvider>
   )
 }
 

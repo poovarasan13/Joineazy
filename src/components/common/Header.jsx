@@ -1,52 +1,57 @@
 import { useAuth } from '../../context/AuthContext'
-import { useTheme } from '../../context/ThemeContext'
 
 function Header() {
   const { currentUser, logout } = useAuth()
-  const { isDarkMode, toggleDarkMode } = useTheme()
 
-  // Pick distinct badge styling based on role
   const isAdmin = currentUser?.role === 'admin'
   const roleBadgeStyle = isAdmin
-    ? 'bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-950/60 dark:text-purple-300 dark:border-purple-800'
-    : 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800'
+    ? 'bg-purple-50 text-purple-700 border-purple-200'
+    : 'bg-indigo-50 text-indigo-700 border-indigo-200'
+
+  const roleDotColor = isAdmin ? 'bg-purple-500' : 'bg-indigo-500'
 
   return (
-    <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 transition-colors">
-      <div className="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
-        {/* App Title */}
-        <h1 className="text-xl font-bold text-gray-900 dark:text-white tracking-tight">
-          Assignment Dashboard
-        </h1>
+    <header className="bg-white border-b border-slate-200 sticky top-0 z-40 backdrop-blur-md bg-white/90">
+      <div className="max-w-6xl mx-auto px-4 py-3.5 flex flex-wrap items-center justify-between gap-3">
+        {/* Brand / Logo */}
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-xs">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+            </svg>
+          </div>
+          <div>
+            <h1 className="text-base font-bold text-slate-900 leading-tight">
+              Assignment & Review
+            </h1>
+            <p className="text-[11px] text-slate-500 font-medium">
+              Academic Dashboard
+            </p>
+          </div>
+        </div>
 
         {/* User Info & Actions */}
         <div className="flex items-center flex-wrap gap-2.5 sm:gap-3">
-          {/* Dark Mode Toggle Button */}
-          <button
-            type="button"
-            onClick={toggleDarkMode}
-            aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-            className="p-1.5 sm:px-2.5 sm:py-1 rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-sm transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
-            title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-          >
-            {isDarkMode ? '☀️' : '🌙'}
-          </button>
+          {/* User Profile Pill */}
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-200 bg-slate-50/70">
+            <span className="text-xs font-semibold text-slate-800">
+              {currentUser?.name}
+            </span>
 
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
-            {currentUser?.name}
-          </span>
+            <span
+              className={`inline-flex items-center gap-1.5 text-[11px] font-semibold px-2 py-0.5 rounded-full border capitalize ${roleBadgeStyle}`}
+            >
+              <span className={`w-1.5 h-1.5 rounded-full ${roleDotColor}`} />
+              {currentUser?.role}
+            </span>
+          </div>
 
-          <span
-            className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border capitalize ${roleBadgeStyle}`}
-          >
-            {currentUser?.role}
-          </span>
-
+          {/* Logout Button */}
           <button
             type="button"
             onClick={logout}
             aria-label="Log out of account"
-            className="text-sm px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-medium transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="text-xs px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-rose-500"
           >
             Logout
           </button>
