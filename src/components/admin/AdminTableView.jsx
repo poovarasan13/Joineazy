@@ -174,22 +174,36 @@ function AdminTableView({ assignments, onEdit, onDelete }) {
                                 return (
                                   <div
                                     key={student.id}
-                                    className="p-2 rounded-lg border border-slate-100 bg-slate-50 flex items-center justify-between text-xs"
+                                    className="p-2.5 rounded-lg border border-slate-100 bg-slate-50 flex items-center justify-between text-xs gap-2"
                                   >
-                                    <span className="font-medium text-slate-800 truncate pr-2">
+                                    <span className="font-medium text-slate-800 truncate">
                                       {student.name}
                                     </span>
-                                    {studentDone ? (
-                                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 shrink-0">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                                        Submitted
-                                      </span>
-                                    ) : (
-                                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-50 text-amber-700 border border-amber-200 shrink-0">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-                                        Pending
-                                      </span>
-                                    )}
+                                    <div className="flex items-center gap-1.5 shrink-0">
+                                      {studentDone ? (
+                                        <>
+                                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                                            Submitted
+                                          </span>
+                                          <a
+                                            href={submission.submissionLink || assignment.driveLink}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            aria-label={`View submitted work by ${student.name}`}
+                                            className="text-[11px] font-semibold text-indigo-600 hover:text-indigo-800 hover:underline inline-flex items-center gap-0.5 ml-1"
+                                          >
+                                            <span>View Work</span>
+                                            <span>↗</span>
+                                          </a>
+                                        </>
+                                      ) : (
+                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-50 text-amber-700 border border-amber-200">
+                                          <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                                          Pending
+                                        </span>
+                                      )}
+                                    </div>
                                   </div>
                                 )
                               })}

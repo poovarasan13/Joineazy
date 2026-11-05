@@ -117,8 +117,8 @@ export function DataProvider({ children }) {
     setSubmissions((prev) => prev.filter((sub) => sub.assignmentId !== id))
   }
 
-  // 5. Actions to manage submissions
-  function markAsSubmitted(assignmentId, studentId) {
+  // 5. Actions to manage submissions (supports optional student public Drive link)
+  function markAsSubmitted(assignmentId, studentId, submissionLink = '') {
     const alreadySubmitted = submissions.some(
       (sub) => sub.assignmentId === assignmentId && sub.studentId === studentId
     )
@@ -128,6 +128,7 @@ export function DataProvider({ children }) {
       assignmentId,
       studentId,
       submittedAt: new Date().toISOString(),
+      submissionLink: submissionLink.trim() || undefined,
     }
     setSubmissions((prev) => [...prev, newSubmission])
   }

@@ -2,36 +2,28 @@ import { useState } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { useData } from '../../context/DataContext'
 import { formatDate, isOverdue } from '../../utils/dateHelpers'
-import ConfirmDialog from '../common/ConfirmDialog'
+import SubmissionModal from './SubmissionModal'
 
 function StudentTableView({ assignments, submissions }) {
   const { currentUser } = useAuth()
   const { markAsSubmitted } = useData()
 
-  // Track which assignment is currently going through the 2-step submission flow
+  // Track which assignment is currently being submitted in the 2-step modal
   const [activeAssignment, setActiveAssignment] = useState(null)
-  const [confirmStep, setConfirmStep] = useState(0) // 0 = closed, 1 = drive check, 2 = final confirmation
 
   function handleStartSubmit(assignment) {
     setActiveAssignment(assignment)
-    setConfirmStep(1)
   }
 
-  function handleFirstConfirm() {
-    setConfirmStep(2)
-  }
-
-  function handleFinalConfirm() {
+  function handleSubmitSolution(studentDriveLink) {
     if (activeAssignment) {
-      markAsSubmitted(activeAssignment.id, currentUser.id)
+      markAsSubmitted(activeAssignment.id, currentUser.id, studentDriveLink)
+      setActiveAssignment(null)
     }
-    setActiveAssignment(null)
-    setConfirmStep(0)
   }
 
-  function handleCancel() {
+  function handleCloseModal() {
     setActiveAssignment(null)
-    setConfirmStep(0)
   }
 
   return (
@@ -104,13 +96,13 @@ function StudentTableView({ assignments, submissions }) {
                     </div>
                   </td>
 
-                  {/* Google Drive Link */}
+                  {/* Course Google Drive Link */}
                   <td className="py-4 px-4 whitespace-nowrap">
                     <a
                       href={assignment.driveLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      aria-label={`Open Google Drive files for ${assignment.title}`}
+                      aria-label={`Open Course Google Drive folder for ${assignment.title}`}
                       className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200/60 transition focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     >
                       <span>Drive</span>
@@ -146,18 +138,33 @@ function StudentTableView({ assignments, submissions }) {
                   {/* Action Column */}
                   <td className="py-4 px-4 sm:px-6 whitespace-nowrap text-right">
                     {isSubmitted ? (
-                      <span className="inline-flex items-center gap-1 text-xs text-emerald-600 font-medium">
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span>Done ({formatDate(submissionRecord.submittedAt)})</span>
-                      </span>
+                      <div className="inline-flex items-center gap-2.5">
+                        <span className="inline-flex items-center gap-1 text-xs text-emerald-600 font-medium">
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                          <span>Done ({formatDate(submissionRecord.submittedAt)})</span>
+                        </span>
+
+                        {submissionRecord.submissionLink && (
+                          <a
+                            href={submissionRecord.submissionLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`View submitted solution file for ${assignment.title}`}
+                            className="text-xs text-indigo-600 hover:text-indigo-800 font-semibold hover:underline inline-flex items-center gap-0.5"
+                          >
+                            <span>My File</span>
+                            <span>↗</span>
+                          </a>
+                        )}
+                      </div>
                     ) : (
                       <button
                         type="button"
                         onClick={() => handleStartSubmit(assignment)}
                         aria-label={`Submit solution for ${assignment.title}`}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white transition shadow-xs cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white transition shadow-xs cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500"
                       >
                         Submit Solution
                       </button>
@@ -170,26 +177,12 @@ function StudentTableView({ assignments, submissions }) {
         </table>
       </div>
 
-      {/* Confirmation Step 1: Drive Verification */}
-      <ConfirmDialog
-        isOpen={confirmStep === 1}
-        title="Verify Drive Submission"
-        message={`Have you uploaded your complete solution for "${activeAssignment?.title}" to the designated Google Drive link?`}
-        confirmText="Yes, I uploaded it"
-        cancelText="Cancel"
-        onConfirm={handleFirstConfirm}
-        onCancel={handleCancel}
-      />
-
-      {/* Confirmation Step 2: Final Submission */}
-      <ConfirmDialog
-        isOpen={confirmStep === 2}
-        title="Final Confirmation"
-        message="This will permanently mark the task as Submitted for faculty grading. Do you wish to proceed?"
-        confirmText="Confirm Submission"
-        cancelText="Cancel"
-        onConfirm={handleFinalConfirm}
-        onCancel={handleCancel}
+      {/* 2-Step Submission Modal */}
+      <SubmissionModal
+        isOpen={Boolean(activeAssignment)}
+        assignment={activeAssignment}
+        onClose={handleCloseModal}
+        onSubmit={handleSubmitSolution}
       />
     </div>
   )
